@@ -104,35 +104,14 @@ fun RemoteApp() {
         ) { innerPadding ->
             when (currentRemote) {
                 RemoteType.AIR_CONDITIONER -> {
-                    val viewModel: AirConditionerViewModel = viewModel()
-                    AirConditionerRemote(modifier = Modifier.padding(innerPadding), viewModel = viewModel)
+                    val viewModel: SurreyAcRemoteViewModel = viewModel()
+                    SurreyAcRemoteView(modifier = Modifier.padding(innerPadding), viewModel = viewModel)
                 }
                 RemoteType.TELEVISION -> {
                     val viewModel: TelevisionViewModel = viewModel()
                     TelevisionRemote(modifier = Modifier.padding(innerPadding), viewModel = viewModel)
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun AirConditionerRemote(modifier: Modifier = Modifier, viewModel: AirConditionerViewModel) {
-    val buttonPressed = viewModel.buttonPressed
-
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(onClick = { viewModel.onOnButtonPressed() }) {
-            Text("On")
-        }
-        Button(onClick = { viewModel.onOffButtonPressed() }) {
-            Text("Off")
-        }
-        if (buttonPressed.isNotEmpty()) {
-            Text(text = "tocaste el botón $buttonPressed")
         }
     }
 }

@@ -30,4 +30,5 @@ object InfraredEmitter {
         }
         return binaryList.toIntArray()
     }
+    
 }

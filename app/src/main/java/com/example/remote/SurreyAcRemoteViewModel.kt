@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 
-class AirConditionerViewModel(private val application: Application) : AndroidViewModel(application) {
+class SurreyAcRemoteViewModel(private val application: Application) : AndroidViewModel(application) {
 
     private val ON_COMMAND = "B24D9F6040BF"
     private val OFF_COMMAND = "B24D7B84E01F"
