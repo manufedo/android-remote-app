@@ -1,12 +1,10 @@
 package com.example.remote
 
-import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.AndroidViewModel
 
-class SurreyAcRemoteViewModel(private val application: Application) : AndroidViewModel(application) {
+class SurreyAcRemoteViewModel(private val _infraredEmitter: InfraredEmitter){
 
     private val ON_COMMAND = "B24D9F6040BF"
     private val OFF_COMMAND = "B24D7B84E01F"
@@ -21,6 +19,6 @@ class SurreyAcRemoteViewModel(private val application: Application) : AndroidVie
         buttonPressed = "off"
         val pattern = intArrayOf(1901, 4453, 625, 1568, 625, 1568, 625, 502, 625, 502, 625, 502, 625, 502, 625, 502, 625, 1568, 625, 1568, 625, 1568, 625, 502, 625, 502, 625, 502, 625, 502, 625, 502, 625, 1568, 625, 1568, 625, 502, 625, 502, 625, 502, 625, 1568, 625, 502, 625, 502, 625, 1568, 625, 502, 625, 1568, 625, 1568, 625, 40000)
         val frequency = 38400
-        InfraredEmitter.transmit(application.applicationContext, frequency, pattern)
+        _infraredEmitter.transmit(frequency, pattern)
     }
 }

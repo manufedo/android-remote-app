@@ -1,5 +1,6 @@
 package com.example.remote
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +35,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getSystemService
+import android.hardware.ConsumerIrManager
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.remote.ui.theme.RemoteTheme
 import kotlinx.coroutines.launch
@@ -41,10 +44,11 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val irEmitter = InfraredEmitter(getSystemService(Context.CONSUMER_IR_SERVICE) as ConsumerIrManager)
         enableEdgeToEdge()
         setContent {
             RemoteTheme {
-                RemoteApp()
+                RemoteApp(irEmitter)
             }
         }
     }
@@ -57,9 +61,10 @@ enum class RemoteType {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RemoteApp() {
+fun RemoteApp(infraredEmitter : InfraredEmitter) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
     var currentRemote by remember { mutableStateOf(RemoteType.AIR_CONDITIONER) }
 
     ModalNavigationDrawer(
@@ -104,7 +109,7 @@ fun RemoteApp() {
         ) { innerPadding ->
             when (currentRemote) {
                 RemoteType.AIR_CONDITIONER -> {
-                    val viewModel: SurreyAcRemoteViewModel = viewModel()
+                    val viewModel = SurreyAcRemoteViewModel(infraredEmitter)
                     SurreyAcRemoteView(modifier = Modifier.padding(innerPadding), viewModel = viewModel)
                 }
                 RemoteType.TELEVISION -> {
@@ -141,6 +146,6 @@ fun TelevisionRemote(modifier: Modifier = Modifier, viewModel: TelevisionViewMod
 @Composable
 fun RemoteAppPreview() {
     RemoteTheme {
-        RemoteApp()
+        RemoteApp(InfraredEmitter(null))
     }
 }

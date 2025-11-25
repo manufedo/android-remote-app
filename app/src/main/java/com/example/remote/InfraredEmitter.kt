@@ -1,14 +1,12 @@
 package com.example.remote
 
-import android.content.Context
 import android.hardware.ConsumerIrManager
 
-object InfraredEmitter {
+class InfraredEmitter (private val _irManager: ConsumerIrManager?) {
 
-    fun transmit(context: Context, frequency: Int, pattern: IntArray) {
-        val irManager = context.getSystemService(Context.CONSUMER_IR_SERVICE) as? ConsumerIrManager
-        if (irManager?.hasIrEmitter() == true) {
-            irManager.transmit(frequency, pattern)
+    fun transmit(frequency: Int, pattern: IntArray) {
+        if (_irManager?.hasIrEmitter() == true) {
+            _irManager.transmit(frequency, pattern)
         }
     }
 
