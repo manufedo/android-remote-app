@@ -24,8 +24,12 @@ fun SurreyAcRemoteView(modifier: Modifier = Modifier, viewModel: SurreyAcRemoteV
         Button(onClick = { viewModel.onOffButtonPressed() }) {
             Text("Off")
         }
-        if (buttonPressed.isNotEmpty()) {
-            Text(text = "tocaste el botón $buttonPressed")
+        Button(onClick = { viewModel.onTemperatureUp() }) {
+            Text("+")
         }
+        Button(onClick = { viewModel.onTemperatureDown() }) {
+            Text("-")
+        }
+        Text("${viewModel.temperature}°")
     }
 }

@@ -1,21 +1,25 @@
 package com.example.remote
 
 internal object Helpers {
-    /**
-     * Converts a hexadecimal string into an array of booleans representing binary (0s and 1s).
-     */
-    fun hexToBinaryArray(hex: String): BooleanArray {
-        val binaryList = mutableListOf<Boolean>()
-        for (hexChar in hex) {
-            // Convert hex character to integer
-            val intValue = hexChar.toString().toInt(16)
-            // Convert integer to a 4-digit binary string (e.g., 11 -> "1011")
-            val binaryString = intValue.toString(2).padStart(4, '0')
-            // Add each digit to the list
-            for (binaryChar in binaryString) {
-                binaryList.add(binaryChar == '1')
-            }
+
+
+    fun longToBinaryArray(number: Long): BooleanArray {
+        val booleanArray = BooleanArray(64)
+
+        // Recorremos desde el bit 63 (izquierda) hasta el 0 (derecha)
+        for (i in 0 until 64) {
+            // Movemos los bits a la derecha para dejar el bit que nos interesa en la posición 0
+            // Ejemplo: Si i es 0, miramos el bit 63 (el primero de la izquierda)
+            val bitPosition = 63 - i
+
+            // (number shr bitPosition) mueve el bit a la posición 0
+            // ( ... and 1L) aísla ese bit. Si es 1, el resultado es 1.
+            val bitValue = (number shr bitPosition) and 1L
+
+            // Si bitValue es 1, es true. Si es 0, es false.
+            booleanArray[i] = (bitValue == 1L)
         }
-        return binaryList.toBooleanArray()
+
+        return booleanArray
     }
 }

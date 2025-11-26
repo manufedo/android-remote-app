@@ -6,14 +6,29 @@ import androidx.compose.runtime.setValue
 
 class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmitter){
 
-    private val ON_COMMAND = "B24D9F6040BF"
-    private val OFF_COMMAND = "B24D7B84E01F"
+    private val ON_COMMAND : Long = 0xB24D9F6040BF
+    private val OFF_COMMAND : Long = 0xB24D7B84E01F
     private val shortDuration = 550
     private val zeroDuration = shortDuration
     private val oneDuration = shortDuration*3;
     private val longDuration = shortDuration*8;
     var buttonPressed by mutableStateOf("")
         private set
+
+    var temperature by mutableStateOf(17)
+        private set
+
+    fun onTemperatureUp() {
+        if (temperature < 30) { // Assuming 30 is the max temp
+            temperature++
+        }
+    }
+
+    fun onTemperatureDown() {
+        if (temperature > 17) { // Assuming 16 is the min temp
+            temperature--
+        }
+    }
 
     fun onOnButtonPressed() {
         buttonPressed = "on"
@@ -25,14 +40,14 @@ class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmit
          transmitCommand(OFF_COMMAND)
     }
 
-     fun transmitCommand(hexCommand : String){
+     fun transmitCommand(command : Long){
         val pattern = mutableListOf<Int>()
 
         //Agrego 2 espacios largos antes de empezar a emitir el mensaje para avisarle al aire acondicionado (siguiendo su protocolo)
         pattern.addAll(listOf(longDuration, longDuration))
 
         //Paso el comando a unos y ceros (true y false)
-        val binaryCommand = Helpers.hexToBinaryArray(hexCommand)
+        val binaryCommand = Helpers.longToBinaryArray(command)
 
         //Pusheo el mensaje
         pushCommand(pattern, binaryCommand)
@@ -50,7 +65,10 @@ class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmit
     }
 
     private fun pushCommand(pattern : MutableList<Int>, binaryCommand : BooleanArray) {
-        for (bit in binaryCommand) {
+        //Solo necesito 48 bits no los 64
+        for (i in 16 until 64)
+        {
+            val bit = binaryCommand[i]
             //Agrego un espacio delante de cada bit (es el momento que la luz se prende)
             pattern.add(shortDuration)
             if (bit)
