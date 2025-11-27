@@ -1,8 +1,6 @@
 package com.example.remote
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 
 class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmitter){
 
@@ -10,8 +8,8 @@ class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmit
     private val OFF_COMMAND : Long = 0xB24D7B84E01F
     private val shortDuration = 550
     private val zeroDuration = shortDuration
-    private val oneDuration = shortDuration*3;
-    private val longDuration = shortDuration*8;
+    private val oneDuration = shortDuration*3
+    private val longDuration = shortDuration*8
 
     //Esto está hecho usando alguna variante del código gray
     private val temperatureCode : Map<Int,Long> = hashMapOf(
