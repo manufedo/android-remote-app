@@ -30,8 +30,6 @@ class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmit
         29 to 0xA050,
         30 to 0xB040
     )
-    var buttonPressed by mutableStateOf("")
-        private set
 
     private var _temperature = mutableStateOf(17)
 
@@ -58,12 +56,10 @@ class SurreyAcRemoteViewModel(private val _infraredTransmitter: InfraredTransmit
     }
 
     fun onOnButtonPressed() {
-        buttonPressed = "on"
         setTemperature()
     }
 
     fun onOffButtonPressed() {
-        buttonPressed = "off"
          transmitCommand(OFF_COMMAND)
     }
 
